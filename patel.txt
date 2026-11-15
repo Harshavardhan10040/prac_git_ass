@@ -26,6 +26,7 @@ patelll
                     			└── Projects to build: MavenJava_Test
                     			└── Trigger: Only if build is stable
                     	     └── Apply and Save
+ngrok http 8085
 
 
 pipeline {
