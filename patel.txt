@@ -1,1 +1,46 @@
 patelll
+
+pipeline {
+    agent any
+
+    tools {
+        maven 'MAVEN-HOME'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'master',
+                    url: 'https://github.com/Harshavardhan10040/mavenJavaproject'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                    bat 'mvn clean package'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                    bat 'mvn test'
+            }
+        }
+
+        
+    }
+
+    post {
+        success {
+            mail to: 'kolaganiharshavardhan983@gmail.com',
+                subject: 'Build Success!',
+                body: 'The build is successful!'
+        }
+
+        failure {
+            mail to: 'kolaganiharshavardhan983@gmail.com',
+                subject: 'Build Failure!',
+                body: 'The build has failed!'
+        }
+    }
+}
