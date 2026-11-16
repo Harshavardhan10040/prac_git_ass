@@ -31,6 +31,8 @@ networks:
 volumes:
   db-data:
 
+
+docker compose exec db psql -U demo -d demo_db
 patelll
 
  └── Step 4: Create Freestyle Project (e.g., MavenWeb_Deploy)
