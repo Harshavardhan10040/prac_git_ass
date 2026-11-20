@@ -1,0 +1,252 @@
+code : 
+File name :docker-compose.yml
+services:
+  web:
+    image: nginx:latest
+    ports:
+
+      - "8080:80"
+    networks:
+      - app-net
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: demo
+      POSTGRES_PASSWORD: demo
+      POSTGRES_DB: demo_db
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - app-net
+
+  redis:
+    image: redis:alpine
+    networks:
+      - app-net
+
+networks:
+  app-net:
+
+volumes:
+  db-data:
+
+
+docker compose exec db psql -U demo -d demo_db
+commands :
+docker compose up -d
+docker compose down 
+
+
+patelll
+
+https://github.com/kavalicharan5354-glitch/maven-web.git
+
+
+MAVEN JAVA AUTOMATION – JENKINS
+
+1. Open Jenkins → localhost:8080
+
+2. Create Freestyle:
+   MavenJava_Build
+
+3. Configure Git:
+   Repository URL
+   Branch: */main
+
+4. Build Steps:
+   Maven → clean
+   Maven → install
+
+5. Post-build:
+   Archive artifacts → **/*
+   Build other projects → MavenJava_Test
+   → Only if build is stable
+
+6. Create Freestyle:
+   MavenJava_Test
+
+7. Build Environment:
+   ✓ Delete workspace before build
+
+8. Build Steps:
+   Copy artifacts from MavenJava_Build
+   → Stable build only
+   → **/*
+
+   Maven → test
+
+9. Post-build:
+   Archive artifacts → **/*
+
+10. Create View:
+    MavenJava_Pipeline
+    → Build Pipeline View
+    → Initial Job: MavenJava_Build
+
+11. Run:
+    MavenJava_Build → Console Output
+    → BUILD SUCCESS
+
+12. MavenJava_Test runs automatically.
+
+FINAL FLOW:
+
+BUILD → clean → install → archive
+                  ↓
+                TEST
+                  ↓
+             copy → test → archive
+                  ↓
+                GREEN
+-----------------------------------------------------------------------------
+maven web-
+MAVEN WEB AUTOMATION – JENKINS
+
+1. OPEN JENKINS
+   → localhost:8080
+
+2. CREATE BUILD JOB
+   New Item → MavenWeb_Build → Freestyle → OK
+
+   Description: Web Build demo
+
+   Source Code Management:
+   → Git
+   → Repository URL
+   → Branch: */main or */master
+
+   Build Steps:
+   → Invoke top-level Maven targets
+      Maven = MAVEN_HOME
+      Goals = clean
+
+   → Invoke top-level Maven targets
+      Maven = MAVEN_HOME
+      Goals = install
+
+   Post-build:
+   → Archive artifacts
+      Files = **/*
+
+   → Build other projects
+      Project = MavenWeb_Test
+      Trigger = Only if build is stable
+
+   → Save
+
+
+3. CREATE TEST JOB
+   New Item → MavenWeb_Test → Freestyle → OK
+
+   Description: Test demo
+
+   Build Environment:
+   ✓ Delete workspace before build starts
+
+   Build Steps:
+   → Copy artifacts from another project
+      Project = MavenWeb_Build
+      Build = Stable build only
+      Artifacts = **/*
+
+   → Invoke top-level Maven targets
+      Maven = MAVEN_HOME
+      Goals = test
+
+   Post-build:
+   → Archive artifacts
+      Files = **/*
+
+   → Build other projects
+      Project = MavenWeb_Deploy
+
+   → Save
+
+
+4. CREATE DEPLOY JOB
+   New Item → MavenWeb_Deploy → Freestyle → OK
+
+   Description: Web Code Deployment
+
+   Build Environment:
+   ✓ Delete workspace before build starts
+
+   Build Steps:
+   → Copy artifacts from another project
+      Project = MavenWeb_Test
+      Build = Stable build only
+      Artifacts = **/*
+
+   Post-build:
+   → Deploy WAR/EAR to a container
+      WAR/EAR File = **/*.war
+      Context Path = Webpath
+      Container = Tomcat 9.x remote
+      Credentials = admin / 1234
+      Tomcat URL = https://localhost:8085/
+
+   → Save
+
+
+5. CREATE PIPELINE VIEW
+   Dashboard → + beside "All"
+
+   Name = MavenWeb_Pipeline
+
+   Select:
+   → Build Pipeline View
+
+   Layout:
+   → Based on upstream/downstream relationship
+
+   Initial Job:
+   → MavenWeb_Build
+
+   → Save
+
+
+6. RUN
+   MavenWeb_Build → Run
+
+   Check Console Output:
+   → BUILD SUCCESS
+
+   Then automatically:
+
+   MavenWeb_Build
+          ↓
+   MavenWeb_Test
+          ↓
+   MavenWeb_Deploy
+          ↓
+       GREEN
+
+
+7. CHECK TOMCAT
+   Open Tomcat homepage
+   → Manager App
+   → /webpath
+
+-------------------------------------------------
+kubectl create deployment mynginx --image=nginx
+kubectl set image deployment/myngnix nginx=nginx:latest
+kubectl get pods
+kubectl get deployments
+kubectl get services
+kubectl expose deployment mynginx --type=NodePort --port=80 --target-port=80
+kubectl scale deployment mynginx --replicas=4
+kubectl get service myngnix
+kubectl port-forward svc/mynginx 8084:80
+kubectl delete deployment mynginx
+kubectl delete service mynginx
+minikube stop
+minikube delete
+docker pull jasonrivers/nagios:latest
+docker run --name nagiosdemo -p 8888:80 jasonrivers/nagios:latest
+docker stop nagiosdemo
+docker rm nagiosdemo
+docker images
+docker rmi jasonrivers/nagios:latest
